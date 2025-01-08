@@ -1,9 +1,13 @@
-const initialState = {
-    balance: 0,
-    loan: 0,
-    loanPurpose: '',
-}
-//state rom ar gvkondes initial states aigebs sawkisad tavis dazgvevis miznit
-function reducer(state = initialState ,action){
+import { createStore , combineReducers} from "redux";
+import accountReducer from "./features/accounts/AccountSlice";
+import customerReducer from "./features/customers/CustomersSlice";
+import { deposit } from "./features/accounts/AccountSlice";
+const rootReducer = combineReducers({
+    account: accountReducer,
+    customer: customerReducer
+})
 
-}
+const store =  createStore(rootReducer)
+store.dispatch(deposit(100))
+console.log(store.getState())
+export default store
