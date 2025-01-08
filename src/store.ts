@@ -6,8 +6,8 @@ const rootReducer = combineReducers({
     account: accountReducer,
     customer: customerReducer
 })
-
+export type RootState = ReturnType<typeof rootReducer>
+export type AppDispatch = typeof store.dispatch
 const store =  createStore(rootReducer)
-store.dispatch(deposit(100))
-console.log(store.getState())
+
 export default store
