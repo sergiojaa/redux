@@ -1,7 +1,7 @@
 import { useState } from "react"
-import { useDispatch } from "react-redux"
-import { AppDispatch } from "../../store"
-import { deposit } from "./AccountSlice"
+import { useDispatch, useSelector } from "react-redux"
+import { AppDispatch, RootState } from "../../store"
+import { deposit, payLoan, requestLoan, withdraw } from "./AccountSlice"
 
 export default function AccountOperations() {
   const [depositAmount, setDepositAmount] = useState<string | number>('')
@@ -9,19 +9,28 @@ export default function AccountOperations() {
   const [loanAMount, setLoanAmount] = useState<string | number>('')
   const [loaPurpose, setLoanPurpose] = useState('')
   const [currency, setCurrency] = useState<string>('usd')
+  const account = useSelector((store: RootState) => store.account)
+  console.log(account)
   const dispatch = useDispatch<AppDispatch>()
   const handleDeposit = () => {
     if (!depositAmount) return
-    dispatch(deposit(depositAmount))
+    dispatch(deposit(+depositAmount))
+    setDepositAmount('')
   }
   const handlePayLoan = () => {
-
+    dispatch(payLoan())
   }
   const handleRequestLoan = () => {
+    if (!loanAMount) return;
 
+    dispatch(requestLoan(+loanAMount, loaPurpose))
+    setLoanAmount('')
+    setLoanPurpose('')
   }
   const handleWithdraw = () => {
-
+    if (!withdrawAmount) return;
+    dispatch(withdraw(+withdrawAmount))
+    setWithdrawAmount('')
   }
   return (
     <div>
@@ -55,14 +64,12 @@ export default function AccountOperations() {
           <div>
             <label htmlFor="">Request Loan</label>
             <input onChange={(e) => setLoanAmount(+e.target.value)} value={loanAMount} type="number" />
-            <input onChange={(e) => setLoanPurpose(e.target.value)} value={loanAMount} type="text" />
+            <input onChange={(e) => setLoanPurpose(e.target.value)} value={loaPurpose} type="text" />
             <button onClick={handleRequestLoan}>Request Loan</button>
 
 
           </div>
           <div>
-            <label htmlFor="Pay Loan"></label>
-            <input onChange={(e) => setLoanAmount(+e.target.value)} value={loanAMount} type="number" />
             <button onClick={handlePayLoan}>pay Loan</button>
 
           </div>
