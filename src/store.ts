@@ -1,17 +1,37 @@
-import { createStore, combineReducers, applyMiddleware } from "redux";
-import accountReducer from "./features/accounts/AccountSlice";
-import customerReducer from "./features/customers/CustomersSlice";
-import { thunk } from "redux-thunk";
-import { deposit } from "./features/accounts/AccountSlice";
-const rootReducer = combineReducers({
-    account: accountReducer,
-    customer: customerReducer
-})
+const accountInitialState = {
+    balance: 0,
+    loan: 0,
+    loanPurpose: '',
+}
+function accountReducer(state = accountInitialState, action) {
+    switch (action.type) {
+        case 'account/deposit':
+            return {
+                ...state,
+                balance: state.balance + action.payload
+            }
 
-export type RootState = ReturnType<typeof rootReducer>
-export type AppDispatch = typeof store.dispatch
-const store = createStore(rootReducer,
-    applyMiddleware(thunk)
-)
+        case 'account/withdraw':
+            return {
+                ...state,
+                balance: state.balance - action.payload
+            }
 
-export default store
+        case 'account/requestLoan':
+            if (state.loan > 0) return state;
+            break;
+
+
+        case 'account/payLoan': {
+            return {
+                ...state,
+                loan: 0,
+                loanPurpose: '',
+                balance: state.balance - action.loan
+            }
+        }
+        default:
+            return state
+    }
+
+}
