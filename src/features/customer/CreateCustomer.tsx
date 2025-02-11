@@ -20,7 +20,7 @@ export default function CreateCustomer() {
             <h2>Create Customer</h2>
             <div>
                 <div>
-                    <label htmlFor="name">Customer full name</label>
+                    <label htmlFor="name">Customer Full Name</label>
                     <input
                         type="text"
                         id="name"
